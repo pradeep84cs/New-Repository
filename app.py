@@ -192,6 +192,117 @@ if uploaded_file:
 
         ax3.set_ylabel("Importance Score")
 
+        # --------------------------------------------------
+# Compare All Algorithms
+# --------------------------------------------------
+
+from sklearn.metrics import precision_score, recall_score
+
+st.subheader("Compare All Algorithms")
+
+if st.button("Compare All Algorithms"):
+
+    # KNN
+    knn = KNeighborsClassifier(n_neighbors=5)
+    knn.fit(X_train,y_train)
+    pred_knn = knn.predict(X_test)
+
+    acc_knn = accuracy_score(y_test,pred_knn)
+    prec_knn = precision_score(y_test,pred_knn,average='weighted')
+    rec_knn = recall_score(y_test,pred_knn,average='weighted')
+
+    # Random Forest
+    rf = RandomForestClassifier(n_estimators=100)
+    rf.fit(X_train,y_train)
+    pred_rf = rf.predict(X_test)
+
+    acc_rf = accuracy_score(y_test,pred_rf)
+    prec_rf = precision_score(y_test,pred_rf,average='weighted')
+    rec_rf = recall_score(y_test,pred_rf,average='weighted')
+
+    # Decision Tree
+    dt = DecisionTreeClassifier()
+    dt.fit(X_train,y_train)
+    pred_dt = dt.predict(X_test)
+
+    acc_dt = accuracy_score(y_test,pred_dt)
+    prec_dt = precision_score(y_test,pred_dt,average='weighted')
+    rec_dt = recall_score(y_test,pred_dt,average='weighted')
+
+    # Store results
+    results = pd.DataFrame({
+        'Algorithm': ['KNN','Random Forest','Decision Tree'],
+        'Accuracy':[acc_knn,acc_rf,acc_dt],
+        'Precision':[prec_knn,prec_rf,prec_dt],
+        'Recall':[rec_knn,rec_rf,rec_dt]
+    })
+
+    st.subheader("Performance Comparison Table")
+
+    st.write(results)
+
+    # --------------------------------------------------
+    # Comparison Chart
+    # --------------------------------------------------
+
+    fig1, ax1 = plt.subplots()
+
+    x = range(len(results['Algorithm']))
+
+    ax1.bar(x, results['Accuracy'], width=0.25, label='Accuracy')
+    ax1.bar([p+0.25 for p in x], results['Precision'], width=0.25, label='Precision')
+    ax1.bar([p+0.50 for p in x], results['Recall'], width=0.25, label='Recall')
+
+    ax1.set_xticks([p+0.25 for p in x])
+    ax1.set_xticklabels(results['Algorithm'])
+
+    ax1.set_xlabel("Algorithms")
+    ax1.set_ylabel("Score")
+    ax1.set_title("Algorithm Performance Comparison")
+
+    ax1.legend()
+
+    st.pyplot(fig1)
+
+    # --------------------------------------------------
+    # Confusion Matrices
+    # --------------------------------------------------
+
+    st.subheader("Confusion Matrices")
+
+    # KNN Confusion Matrix
+    cm_knn = confusion_matrix(y_test,pred_knn)
+
+    fig2, ax2 = plt.subplots()
+    sns.heatmap(cm_knn,annot=True,cmap="Blues",ax=ax2)
+    ax2.set_xlabel("Predicted Label")
+    ax2.set_ylabel("True Label")
+    ax2.set_title("KNN Confusion Matrix")
+
+    st.pyplot(fig2)
+
+    # Random Forest Confusion Matrix
+    cm_rf = confusion_matrix(y_test,pred_rf)
+
+    fig3, ax3 = plt.subplots()
+    sns.heatmap(cm_rf,annot=True,cmap="Greens",ax=ax3)
+    ax3.set_xlabel("Predicted Label")
+    ax3.set_ylabel("True Label")
+    ax3.set_title("Random Forest Confusion Matrix")
+
+    st.pyplot(fig3)
+
+    # Decision Tree Confusion Matrix
+    cm_dt = confusion_matrix(y_test,pred_dt)
+
+    fig4, ax4 = plt.subplots()
+    sns.heatmap(cm_dt,annot=True,cmap="Oranges",ax=ax4)
+    ax4.set_xlabel("Predicted Label")
+    ax4.set_ylabel("True Label")
+    ax4.set_title("Decision Tree Confusion Matrix")
+
+    st.pyplot(fig4)
+
         ax3.set_title("Decision Tree Feature Importance")
 
         st.pyplot(fig3)
