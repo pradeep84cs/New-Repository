@@ -89,7 +89,7 @@ if uploaded_file is not None:
 
         fig, ax = plt.subplots()
 
-        data.hist(figsize=(10,8), ax=ax)
+        data.hist(figsize=(6,6), ax=ax)
 
         st.pyplot(fig)
 
