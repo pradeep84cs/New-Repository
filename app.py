@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -24,7 +24,7 @@ if uploaded_file:
     y = data['Metformin_Dose']
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X,y,test_size=0.2,random_state=42
+        X, y, test_size=0.2, random_state=42
     )
 
     st.subheader("Run Machine Learning Algorithms")
@@ -40,48 +40,44 @@ if uploaded_file:
         st.subheader("KNN Algorithm Results")
 
         knn = KNeighborsClassifier(n_neighbors=5)
-
-        knn.fit(X_train,y_train)
+        knn.fit(X_train, y_train)
 
         y_pred = knn.predict(X_test)
 
-        acc = accuracy_score(y_test,y_pred)
+        acc = accuracy_score(y_test, y_pred)
 
-        st.write("Accuracy:",round(acc,3))
+        st.write("Accuracy:", round(acc,3))
 
-        # Graph 1 Accuracy
+        # Accuracy Graph
         fig1, ax1 = plt.subplots()
-        ax1.bar(["KNN"],[acc])
+        ax1.bar(["KNN"], [acc])
         ax1.set_xlabel("Algorithm")
         ax1.set_ylabel("Accuracy Score")
         ax1.set_title("KNN Accuracy")
         st.pyplot(fig1)
 
-        # Graph 2 Confusion Matrix
+        # Confusion Matrix
         st.subheader("Confusion Matrix")
 
-        cm = confusion_matrix(y_test,y_pred)
+        cm = confusion_matrix(y_test, y_pred)
 
         fig2, ax2 = plt.subplots()
-        sns.heatmap(cm,annot=True,cmap="Blues",ax=ax2)
+        sns.heatmap(cm, annot=True, cmap="Blues", ax=ax2)
         ax2.set_xlabel("Predicted Label")
         ax2.set_ylabel("True Label")
         ax2.set_title("KNN Confusion Matrix")
         st.pyplot(fig2)
 
-        # Graph 3 Feature Distribution
+        # Feature Distributions
         st.subheader("Feature Distributions")
 
         for column in X.columns:
 
             fig3, ax3 = plt.subplots()
-
             ax3.hist(data[column], bins=15)
 
             ax3.set_xlabel(column)
-
             ax3.set_ylabel("Frequency")
-
             ax3.set_title(f"Distribution of {column}")
 
             st.pyplot(fig3)
@@ -95,48 +91,45 @@ if uploaded_file:
         st.subheader("Random Forest Results")
 
         rf = RandomForestClassifier(n_estimators=100)
-
-        rf.fit(X_train,y_train)
+        rf.fit(X_train, y_train)
 
         y_pred = rf.predict(X_test)
 
-        acc = accuracy_score(y_test,y_pred)
+        acc = accuracy_score(y_test, y_pred)
 
-        st.write("Accuracy:",round(acc,3))
+        st.write("Accuracy:", round(acc,3))
 
-        # Graph 1 Accuracy
+        # Accuracy Graph
         fig1, ax1 = plt.subplots()
-        ax1.bar(["Random Forest"],[acc])
+        ax1.bar(["Random Forest"], [acc])
         ax1.set_xlabel("Algorithm")
         ax1.set_ylabel("Accuracy Score")
         ax1.set_title("Random Forest Accuracy")
         st.pyplot(fig1)
 
-        # Graph 2 Confusion Matrix
+        # Confusion Matrix
         st.subheader("Confusion Matrix")
 
-        cm = confusion_matrix(y_test,y_pred)
+        cm = confusion_matrix(y_test, y_pred)
 
         fig2, ax2 = plt.subplots()
-        sns.heatmap(cm,annot=True,cmap="Blues",ax=ax2)
+        sns.heatmap(cm, annot=True, cmap="Blues", ax=ax2)
         ax2.set_xlabel("Predicted Label")
         ax2.set_ylabel("True Label")
         ax2.set_title("Random Forest Confusion Matrix")
         st.pyplot(fig2)
 
-        # Graph 3 Feature Importance
+        # Feature Importance
         st.subheader("Feature Importance")
 
         importance = rf.feature_importances_
 
         fig3, ax3 = plt.subplots()
 
-        ax3.bar(X.columns,importance)
+        ax3.bar(X.columns, importance)
 
         ax3.set_xlabel("Features")
-
         ax3.set_ylabel("Importance Score")
-
         ax3.set_title("Random Forest Feature Importance")
 
         st.pyplot(fig3)
@@ -150,57 +143,56 @@ if uploaded_file:
         st.subheader("Decision Tree Results")
 
         dt = DecisionTreeClassifier()
-
-        dt.fit(X_train,y_train)
+        dt.fit(X_train, y_train)
 
         y_pred = dt.predict(X_test)
 
-        acc = accuracy_score(y_test,y_pred)
+        acc = accuracy_score(y_test, y_pred)
 
-        st.write("Accuracy:",round(acc,3))
+        st.write("Accuracy:", round(acc,3))
 
-        # Graph 1 Accuracy
+        # Accuracy Graph
         fig1, ax1 = plt.subplots()
-        ax1.bar(["Decision Tree"],[acc])
+        ax1.bar(["Decision Tree"], [acc])
         ax1.set_xlabel("Algorithm")
         ax1.set_ylabel("Accuracy Score")
         ax1.set_title("Decision Tree Accuracy")
         st.pyplot(fig1)
 
-        # Graph 2 Confusion Matrix
+        # Confusion Matrix
         st.subheader("Confusion Matrix")
 
-        cm = confusion_matrix(y_test,y_pred)
+        cm = confusion_matrix(y_test, y_pred)
 
         fig2, ax2 = plt.subplots()
-        sns.heatmap(cm,annot=True,cmap="Blues",ax=ax2)
+        sns.heatmap(cm, annot=True, cmap="Blues", ax=ax2)
         ax2.set_xlabel("Predicted Label")
         ax2.set_ylabel("True Label")
         ax2.set_title("Decision Tree Confusion Matrix")
         st.pyplot(fig2)
 
-        # Graph 3 Feature Importance
+        # Feature Importance
         st.subheader("Feature Importance")
 
         importance = dt.feature_importances_
 
         fig3, ax3 = plt.subplots()
 
-        ax3.bar(X.columns,importance)
+        ax3.bar(X.columns, importance)
 
         ax3.set_xlabel("Features")
-
         ax3.set_ylabel("Importance Score")
+        ax3.set_title("Decision Tree Feature Importance")
 
-        # --------------------------------------------------
+        st.pyplot(fig3)
+
+# --------------------------------------------------
 # Compare All Algorithms
 # --------------------------------------------------
 
-from sklearn.metrics import precision_score, recall_score
-
 st.subheader("Compare All Algorithms")
 
-if st.button("Compare All Algorithms"):
+if uploaded_file and st.button("Compare All Algorithms"):
 
     # KNN
     knn = KNeighborsClassifier(n_neighbors=5)
@@ -229,22 +221,17 @@ if st.button("Compare All Algorithms"):
     prec_dt = precision_score(y_test,pred_dt,average='weighted')
     rec_dt = recall_score(y_test,pred_dt,average='weighted')
 
-    # Store results
     results = pd.DataFrame({
-        'Algorithm': ['KNN','Random Forest','Decision Tree'],
+        'Algorithm':['KNN','Random Forest','Decision Tree'],
         'Accuracy':[acc_knn,acc_rf,acc_dt],
         'Precision':[prec_knn,prec_rf,prec_dt],
         'Recall':[rec_knn,rec_rf,rec_dt]
     })
 
     st.subheader("Performance Comparison Table")
-
     st.write(results)
 
-    # --------------------------------------------------
     # Comparison Chart
-    # --------------------------------------------------
-
     fig1, ax1 = plt.subplots()
 
     x = range(len(results['Algorithm']))
@@ -264,45 +251,30 @@ if st.button("Compare All Algorithms"):
 
     st.pyplot(fig1)
 
-    # --------------------------------------------------
     # Confusion Matrices
-    # --------------------------------------------------
 
     st.subheader("Confusion Matrices")
 
-    # KNN Confusion Matrix
-    cm_knn = confusion_matrix(y_test,pred_knn)
-
+    # KNN
     fig2, ax2 = plt.subplots()
-    sns.heatmap(cm_knn,annot=True,cmap="Blues",ax=ax2)
+    sns.heatmap(confusion_matrix(y_test,pred_knn),annot=True,cmap="Blues",ax=ax2)
     ax2.set_xlabel("Predicted Label")
     ax2.set_ylabel("True Label")
     ax2.set_title("KNN Confusion Matrix")
-
     st.pyplot(fig2)
 
-    # Random Forest Confusion Matrix
-    cm_rf = confusion_matrix(y_test,pred_rf)
-
+    # Random Forest
     fig3, ax3 = plt.subplots()
-    sns.heatmap(cm_rf,annot=True,cmap="Greens",ax=ax3)
+    sns.heatmap(confusion_matrix(y_test,pred_rf),annot=True,cmap="Greens",ax=ax3)
     ax3.set_xlabel("Predicted Label")
     ax3.set_ylabel("True Label")
     ax3.set_title("Random Forest Confusion Matrix")
-
     st.pyplot(fig3)
 
-    # Decision Tree Confusion Matrix
-    cm_dt = confusion_matrix(y_test,pred_dt)
-
+    # Decision Tree
     fig4, ax4 = plt.subplots()
-    sns.heatmap(cm_dt,annot=True,cmap="Oranges",ax=ax4)
+    sns.heatmap(confusion_matrix(y_test,pred_dt),annot=True,cmap="Oranges",ax=ax4)
     ax4.set_xlabel("Predicted Label")
     ax4.set_ylabel("True Label")
     ax4.set_title("Decision Tree Confusion Matrix")
-
     st.pyplot(fig4)
-
-        ax3.set_title("Decision Tree Feature Importance")
-
-        st.pyplot(fig3)
